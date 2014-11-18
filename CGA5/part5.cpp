@@ -128,22 +128,13 @@ void initGL()
 
 
     // set the camera:
-    //glm::vec3 eye = glm::vec3(cam.position);
-    //glm::vec3 center = glm::vec3(cam.position + cam.viewDir);
-    //glm::vec3 up = glm::vec3(cam.upDir);
-
-    //V = glm::lookAt(eye, center, up);
-
-    glm::vec3 eye(50, 80, -160);
-    glm::vec3 center(0, 0, 0);
-    glm::vec3 up(0, 1, 0);
-
+    glm::vec3 eye = glm::vec3(cam.position);
+    glm::vec3 center = glm::vec3(cam.position + cam.viewDir);
+    glm::vec3 up = glm::vec3(cam.upDir);
 
     V = glm::lookAt(eye, center, up);
 
-
     lightSource = V * lightSource;
-
 
     // enable line smoothing:
     glEnable(GL_LINE_SMOOTH);

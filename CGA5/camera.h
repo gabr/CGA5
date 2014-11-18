@@ -26,21 +26,28 @@ class cameraSystem {
     // initialize the system with values suitable for the underlying scene.
     cameraSystem() {
         position = glm::vec4(50, 80, -160, 0);
-        viewDir = -position;
+        viewDir = glm::normalize(-position);
         upDir = glm::vec4(0, 1, 0, 0);
 
         glm::vec3 cross = glm::cross(glm::vec3(viewDir), glm::vec3(upDir));
-        rightDir = glm::vec4(cross.x, cross.y, cross.z, 0);
+        rightDir = glm::normalize(glm::vec4(cross.x, cross.y, cross.z, 0));
+    }
+
+    glm::mat4 getView() {
+        glm::vec3 eye = glm::vec3(position);
+        glm::vec3 center = glm::vec3(position + viewDir);
+        glm::vec3 up = glm::vec3(upDir);
+
+        return glm::lookAt(eye, center, up);
     }
 
 // move the system forward along the viewing direction
    void moveForward(float delta) {
-    // TODO
+       position += delta * viewDir;
    }
 
- //
     void moveBackward(float delta) {
-    // TODO
+        moveForward(-delta);
    }
 
    void yaw(float angle) {

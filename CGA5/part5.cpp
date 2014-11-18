@@ -27,6 +27,7 @@ bool wireframe_mode = false;
 * use and edit
 */
 cameraSystem cam;
+const float forwardDelta = 2;
 
 float t = 0;  // the time parameter (incremented in the idle-function)
 float speed = 0.1;  // rotation speed of the light source in degree/frame
@@ -128,12 +129,7 @@ void initGL()
 
 
     // set the camera:
-    glm::vec3 eye = glm::vec3(cam.position);
-    glm::vec3 center = glm::vec3(cam.position + cam.viewDir);
-    glm::vec3 up = glm::vec3(cam.upDir);
-
-    V = glm::lookAt(eye, center, up);
-
+    V = cam.getView();
     lightSource = V * lightSource;
 
     // enable line smoothing:
@@ -213,13 +209,14 @@ void drawCircle(float r, int num_segments)
 void reshape(int w, int h)
 {
     glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-
     P = glm::perspective(70.0f, (GLfloat)w / (GLfloat)h, 10.0f, 400.0f);
-
 }
 
 void onIdle()
 {
+    // set the camera:
+    V = cam.getView();
+    lightSource = V * glm::vec4(0, 0, 0, 1);
 
     t += speed;  // increase the time parameter
 
@@ -294,6 +291,20 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case '-':
         speed -= 0.01;
+        break;
+
+    case 'w':
+        cam.moveForward(forwardDelta);
+        break;
+        
+    case 's':
+        cam.moveBackward(forwardDelta);
+        break;
+
+    case 'a':
+        break;
+
+    case 'd':
         break;
     }
 

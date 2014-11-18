@@ -6,6 +6,8 @@
 /// bad programming style to put everything in a .h file, but it's perfectly fine for such a small
 /// class! Plus, I don't want to open two files to read your solutions of this class!
 
+#include <iostream>
+
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -41,7 +43,8 @@ class cameraSystem {
     }
 
 // move the system forward along the viewing direction
-   void moveForward(float delta) {
+   void moveForward(float delta)
+   {
        position += delta * viewDir;
    }
 
@@ -50,14 +53,16 @@ class cameraSystem {
    }
 
    void yaw(float angle) {
-       viewDir = glm::transpose(getView()) * glm::vec4(glm::tan(angle * PI / 180.0f), 0, -1, 0);
+       glm::vec3 tmp(glm::transpose(getView()) * glm::vec4(glm::tan(angle * PI / 180.0f), 0, -1, 0));
+       viewDir = glm::normalize(glm::vec4(tmp.x, tmp.y, tmp.z, 0.0));
        glm::vec3 cross = glm::cross(glm::vec3(viewDir), glm::vec3(upDir));
        rightDir = glm::normalize(glm::vec4(cross.x, cross.y, cross.z, 0));
    }
 
 
    void pitch(float angle) {
-       viewDir = glm::transpose(getView()) * glm::vec4(0, -glm::tan(angle * PI / 180.0f), -1, 0);
+       glm::vec3 tmp(glm::transpose(getView()) * glm::vec4(0, -glm::tan(angle * PI / 180.0f), -1, 0));
+       viewDir = glm::normalize(glm::vec4(tmp.x, tmp.y, tmp.z, 0.0));
        glm::vec3 cross = glm::cross(glm::vec3(rightDir), glm::vec3(viewDir));
        upDir = glm::normalize(glm::vec4(cross.x, cross.y, cross.z, 0));
    }

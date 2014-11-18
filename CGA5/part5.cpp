@@ -29,6 +29,7 @@ bool wireframe_mode = false;
 cameraSystem cam;
 const float forwardDelta = 2;
 const float angleDelta = 2.0f;
+glm::vec2 mouseStartPosition;
 
 float t = 0;  // the time parameter (incremented in the idle-function)
 float speed = 0.1;  // rotation speed of the light source in degree/frame
@@ -265,18 +266,18 @@ void display()
 /// the mouse handling is done in the next two functions (you additionally need some global variables):
 void onMouseDown(int button, int state, int x, int y)
 {
-    cam.mouseStartPosition = glm::vec2(x, y);
+    mouseStartPosition = glm::vec2(x, y);
 }
 
 void onMouseMove(int x, int y)
 {
-    int deltaX = x - cam.mouseStartPosition.x;
-    int deltaY = y - cam.mouseStartPosition.y;
+    int deltaX = x - mouseStartPosition.x;
+    int deltaY = y - mouseStartPosition.y;
 
     cam.yaw(deltaX * angleDelta);
     cam.pitch(deltaY * angleDelta);
 
-    cam.mouseStartPosition = glm::vec2(x, y);
+    mouseStartPosition = glm::vec2(x, y);
 }
 
 // the keyboard handler:

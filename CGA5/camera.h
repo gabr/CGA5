@@ -25,6 +25,9 @@ class cameraSystem {
     glm::vec4 upDir;      // up-vector
     glm::vec4 rightDir;   // right-vector (cross product of viewing and up-direction)
 
+    // mouse position when rotatino starts
+    glm::vec2 mouseStartPosition;
+
 
     // initialize the system with values suitable for the underlying scene.
     cameraSystem() {
@@ -54,20 +57,22 @@ class cameraSystem {
    }
 
    void yaw(float angle) {
-      // TODO
-      // dont forget to update the other Vectors!!
+       viewDir = glm::normalize(glm::transpose(getView()) * glm::vec4(glm::tan(angle * PI / 180.0f), 0, -1, 0));
+       glm::vec3 cross = glm::cross(glm::vec3(viewDir), glm::vec3(upDir));
+       rightDir = glm::normalize(glm::vec4(cross.x, cross.y, cross.z, 0));
    }
 
 
    void pitch(float angle) {
-    // TODO
-    // dont forget to update the other Vectors!!
+       viewDir = glm::normalize(glm::transpose(getView()) * glm::vec4(0, -glm::tan(angle * PI / 180.0f), -1, 0));
+       glm::vec3 cross = glm::cross(-glm::vec3(viewDir), glm::vec3(rightDir));
+       upDir = glm::normalize(glm::vec4(cross.x, cross.y, cross.z, 0));
    }
 
 
    void roll(float angle) {
 
-       upDir = glm::transpose(getView()) * glm::normalize(glm::vec4(glm::tan(angle * PI / 180.0f), 1, 0, 0));
+       upDir = glm::normalize(glm::transpose(getView()) * glm::vec4(glm::tan(angle * PI / 180.0f), 1, 0, 0));
        glm::vec3 cross = glm::cross(glm::vec3(viewDir), glm::vec3(upDir));
        rightDir = glm::normalize(glm::vec4(cross.x, cross.y, cross.z, 0));
    }

@@ -13,6 +13,9 @@
 
 class cameraSystem {
 
+  private:
+      const double PI = 3.14159265359;
+
   public:
 
     glm::vec4 position;   // position-vector
@@ -63,8 +66,10 @@ class cameraSystem {
 
 
    void roll(float angle) {
-      // TODO
-     // dont forget to update the other Vectors!!
+
+       upDir = glm::transpose(getView()) * glm::normalize(glm::vec4(glm::tan(angle * PI / 180.0f), 1, 0, 0));
+       glm::vec3 cross = glm::cross(glm::vec3(viewDir), glm::vec3(upDir));
+       rightDir = glm::normalize(glm::vec4(cross.x, cross.y, cross.z, 0));
    }
 
 };

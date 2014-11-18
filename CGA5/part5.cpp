@@ -28,6 +28,7 @@ bool wireframe_mode = false;
 */
 cameraSystem cam;
 const float forwardDelta = 2;
+const float rollDelta = 2.0f;
 
 float t = 0;  // the time parameter (incremented in the idle-function)
 float speed = 0.1;  // rotation speed of the light source in degree/frame
@@ -302,9 +303,11 @@ void keyboard(unsigned char key, int x, int y)
         break;
 
     case 'a':
+        cam.roll(rollDelta);
         break;
 
     case 'd':
+        cam.roll(-rollDelta);
         break;
     }
 
